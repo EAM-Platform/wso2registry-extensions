@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<!-- validation -->
+	<bean id="svzConstraintValidator" class="at.rbg.registry.model.validation.SvzConstraintValidator">
+		<property name="keyCodeDao" ref="keyCodeDao" />
+	</bean>
+
+	<bean id="keyCodeDao"
+		class="at.rbg.registry.persistance.dao.internal.KeyCodePropertyDao">
+  			<property name="properties">    
+  			    <util:properties location="classpath:svzlist.properties"/>   
+  			</property>  
+    </bean>
+	
+    <!--  extend here with new ArtifactTypes! 
+    	 the value is the shortname from the RXT -->
+    <bean id="modelConstants" class="at.rbg.registry.model.ModelConstants" >
+    	<property name="artifactMap">
+    		<map>
+    			<entry key="applicationArtifactName" value="application" />
+    			<entry key="moduleArtifactName" value="appmodules" />
+    			<entry key="hostProgramArtifactName" value="hostprogram" />
+    			<entry key="tableArtifactName" value="table" />    
+   				<entry key="hostTracoArtifactName" value="hosttraco" />    
+   				<entry key="webComponentArtifactName" value="webcomponent" />    
+    			<entry key="clientComponentArtifactName" value="clientcomponent" />    
+    			<entry key="clientApiArtifactName" value="clientapi" />    
+   		 		<entry key="webServiceArtifactName" value="webservice" />     
+   		 		<entry key="personArtifactName" value="person" />     
+   		 		<entry key="infrastructureArtifactName" value="infrastructure" />     
+     		</map>
+    	</property>
+    </bean>
+    
+</beans>

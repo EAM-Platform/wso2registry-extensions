@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.grz.at/jp/DataTypes-2.5"
+	xmlns:jp="http://www.grz.at/jp/DataTypes-2.5" attributeFormDefault="unqualified"
+	elementFormDefault="qualified" targetNamespace="http://www.grz.at/jp/DataTypes-2.5"
+	version="1.0.0">
+
+	<xs:complexType name="MonetaryAmount">
+		<xs:sequence>
+			<xs:element name="amount" type="xs:decimal" />
+			<xs:element maxOccurs="1" minOccurs="0" name="currency"
+				nillable="true" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:element name="monetaryAmount" type="MonetaryAmount" />
+
+	<xs:complexType name="MonetaryAmountList">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="monetaryAmount"
+				type="MonetaryAmount" />
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="Key">
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" />
+			<xs:element minOccurs="0" name="type" type="xs:string" />
+			<xs:element minOccurs="0" name="name" type="xs:string" />
+			<xs:element minOccurs="0" name="description" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="KeyList">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="key"
+				type="Key" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="key" type="Key" />
+
+
+	<xs:complexType name="AnyType">
+		<xs:sequence>
+			<xs:any maxOccurs="unbounded" minOccurs="0" namespace="##any"
+				processContents="skip" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>
+

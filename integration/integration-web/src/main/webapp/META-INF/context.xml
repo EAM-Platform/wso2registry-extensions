@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- The contents of this file will be loaded for each web application -->
+<Context debug="5" reloadable="true" crossContext="true">
+
+<!--
+	 <ResourceLink name="url/KeyStoreConfiguration" global="url/rci/KeyStoreProperties" type="java.net.URL"/>
+-->
+	 <ResourceLink name="url/ZoneConfiguration" global="url/integration-web/ZoneConfiguration" type="java.net.URL"/>
+	 <ResourceLink name="url/LoggerConfiguration" global="url/integration-web/web/LoggerConfiguration" type="java.net.URL"/>	
+</Context>

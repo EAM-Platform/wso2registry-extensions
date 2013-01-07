@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>Camel Routes</display-name>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring-camel.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>manifestreader</servlet-name>
+		<servlet-class>at.rbg.registry.web.maintenance.ManifestReaderServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>CamelServlet</servlet-name>
+		<servlet-class>org.apache.camel.component.servlet.CamelHttpTransportServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- Camel servlet mapping -->
+	<servlet-mapping>
+		<servlet-name>CamelServlet</servlet-name>
+		<url-pattern>/servlet/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>manifestreader</servlet-name>
+		<url-pattern>/version.jsp</url-pattern>
+	</servlet-mapping>
+	<resource-ref>
+		<res-ref-name>url/LoggerConfiguration</res-ref-name>
+		<res-type>java.net.URL</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+	
+	<resource-ref>
+		<description>integration zone config</description>
+		<res-ref-name>url/ZoneConfiguration</res-ref-name>
+		<res-type>java.net.URL</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+</web-app>

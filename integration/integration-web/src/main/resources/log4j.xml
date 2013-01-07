@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+		<param name="Threshold" value="INFO" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d [%t] [%-5p] %l - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="fullLogAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/integration-web_full.log" />
+        <param name="DatePattern" value="_yyyy-MM-dd" />
+        <param name="Append" value="true" />
+        <param name="Threshold" value="INFO"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%t] [%-5p] %l - %m%n"/>
+        </layout>
+    </appender>
+    
+    <appender name="errorLogAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/integration-web_error.log" />
+        <param name="DatePattern" value="_yyyy-MM-dd" />
+        <param name="Append" value="true" />
+        <param name="Threshold" value="ERROR"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%t] [%-5p] %l - %m%n"/>
+        </layout>
+    </appender>
+    
+ 	<category name="org.apache">
+		<priority value="INFO" />
+	</category>
+	
+	<category name="org.springframework">
+		<priority value="INFO" />
+	</category>
+	
+	<root>
+		<priority value="INFO" />
+			<!-- -->
+			<appender-ref ref="consoleAppender" />
+			 
+			<appender-ref ref="fullLogAppender"/>
+			<appender-ref ref="errorLogAppender"/>
+	</root>
+
+</log4j:configuration>

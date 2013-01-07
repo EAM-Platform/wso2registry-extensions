@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:cxf="http://camel.apache.org/schema/cxf" xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+	   http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+ 	   http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+       ">
+
+
+	<import resource="classpath*:META-INF/integration-model-Context.xml" />
+	<import resource="classpath*:META-INF/integration-service-Context.xml" />
+
+	<context:annotation-config />
+	<context:component-scan base-package="at.rbg.registry" />
+	 
+	<cache:annotation-driven />
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+		p:cache-manager-ref="ehcache" />
+
+	<!-- Ehcache library setup -->
+	<bean id="ehcache"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		p:config-location="classpath:at/rbg/registry/cache/ehcache.xml" />
+
+	<!-- register in JMX -->
+	<bean id="ehCacheJmxEnabler" class="at.rbg.registry.cache.JmxRegister">
+		<property name="cacheManager" ref="cacheManager" />
+	</bean>
+
+	<bean id="zoneConfiguration" class="org.springframework.core.io.UrlResource">
+		<constructor-arg type="java.net.URL" value="${zoneFile}">
+			<!-- does not work in WSO2, only in TOMCAT
+				<jee:jndi-lookup jndi-name="java:comp/env/url/ZoneConfiguration" /> 
+			 -->
+		</constructor-arg>
+	</bean>
+
+	<!-- for spring -->		
+	<bean id="propertiesSpring" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" ref="zoneConfiguration" />
+	</bean>
+
+	<bean id="routeConfig" class="at.rbg.registry.routes.RouteConfig">
+		<property name="zoneConfiguration" ref="zoneConfiguration" />
+	</bean>
+	
+	<!-- for camel -->
+	<bean id="properties" class="org.apache.camel.component.properties.PropertiesComponent" depends-on="propertiesSpring">
+		<property name="location">
+			<bean factory-bean="routeConfig" factory-method="getFilename"/>
+		</property>
+	</bean>
+	
+	<cxf:cxfEndpoint id="dependencyQueryEndpoint"
+		address="${eamp.services.hostPort}/DependencyQueryService"
+		serviceClass="at.racon.eamp.dependencyqueryservice_1_0.DependencyQueryServicePortType"
+		serviceName="eade:DependencyQueryService" xmlns:eade="http://www.racon.at/eamp/DependencyQueryService-1.0">
+	</cxf:cxfEndpoint>
+	<cxf:cxfEndpoint id="registryServiceEndpoint"
+		address="${eamp.services.hostPort}/RegistryService"
+		serviceClass="at.racon.eamp.core.registryservice_2_0.RegistryServicePortType"
+		serviceName="ears:RegistryService" xmlns:ears="http://www.racon.at/eamp/core/RegistryService-2.0">
+	</cxf:cxfEndpoint>
+	
+	<!-- processors -->
+	<bean id="excelProcessor" class="at.rbg.registry.processors.excel.ExcelProcessor">
+		<property name="firstRowToUse" value="1" />
+	</bean>
+
+	<bean id="wsdlProcessor" class="at.rbg.registry.processors.WsdlProcessor">
+		<property name="registryFactory" ref="registryFactory" />
+		<property name="archiveMediaType" value="application/vnd.wso2.governance-archive" />
+	</bean>
+
+	<bean id="dependencyQueryRequest"
+		class="at.rbg.registry.processors.services.DependencyQueryRequest">
+	</bean>
+	<bean id="dependencyQueryResponse"
+		class="at.rbg.registry.processors.services.DependencyQueryResponse">
+	</bean>
+	<bean id="registryRequest"
+		class="at.rbg.registry.processors.services.RegistryRequest">
+		<property name="registryFactory" ref="registryFactory" />
+		<property name="registryCache" ref="registryCache" />
+		<property name="fastResult" value="true" />
+	</bean>
+
+	<bean id="failureResponseProcessor" class="at.rbg.registry.processors.FailureResponseProcessor" />
+
+	<bean id="registryWritingProcessor" class="at.rbg.registry.processors.RegistryWritingProcessor">
+		<property name="registryFactory" ref="registryFactory" />
+	</bean>
+
+	<bean id="registryReadingProcessor" class="at.rbg.registry.processors.RegistryReadingProcessor">
+		<property name="registryFactory" ref="registryFactory" />
+		<property name="registryInteraction" ref="registryInteraction" />
+	</bean>
+
+	<bean id="preFetchProcessor" class="at.rbg.registry.processors.PreFetchProcessor">
+	</bean>
+	
+	<bean id="renameHelper" class="at.rbg.registry.processors.repair.RenameHelper">
+		<property name="registryFactory" ref="registryFactory" />
+	</bean>
+	
+
+	<!-- this is done lazily now. init-method="init" -->
+	<bean id="registryFactory" class="at.rbg.registry.communication.RegistryFactory">
+		<property name="baseUrl" value="${registry.baseUrl}" />
+		<property name="username" value="${registry.username}" />
+		<property name="password" value="${registry.password}" />
+		<property name="truststorePassword" value="${truststore.password}" />
+		<property name="truststore" value="${truststore.filename}" />
+
+	</bean>
+
+	<bean id="registryInteraction" class="at.rbg.registry.communication.RegistryInteraction">
+		<property name="registryFactory" ref="registryFactory" />
+		<property name="registryCache" ref="registryCache" />
+	</bean>
+	
+	<bean id="registryCache" class="at.rbg.registry.cache.RegistryCache">
+		<property name="registryFactory" ref="registryFactory" />
+		<property name="keyCodeDao" ref="keyCodeDao" />
+	</bean>
+
+	<bean id="queryBuilder" class="at.rbg.registry.communication.query.QueryBuilder">
+		<property name="keyCodeDao" ref="keyCodeDao" />
+	</bean>
+
+	<bean id="modelBuilder" class="at.rbg.registry.communication.ModelBuilder">
+		<property name="keyCodeDao" ref="keyCodeDao" />
+	</bean>
+
+	<bean id="lateFilteringSupport" class=" at.rbg.registry.communication.query.LateFilteringSupport">
+		<property name="keyCodeDao" ref="keyCodeDao" />
+	</bean>
+
+	<camelContext id="baseContext" xmlns="http://camel.apache.org/schema/spring" >
+		<package>at.rbg.registry</package>
+		<template id="producer" />
+		<consumerTemplate id="consumer" />
+	</camelContext>
+
+</beans>

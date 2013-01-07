@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.wsi4j.at/rci/SecurityTypes/3.0.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:rcis="http://www.wsi4j.at/rci/SecurityTypes/3.0.0" 
+	targetNamespace="http://www.wsi4j.at/rci/SecurityTypes/3.0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+    <xs:complexType name="RCISecurityType">
+    	<xs:sequence>
+			<xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded" namespace="##any"/>
+		</xs:sequence>
+		<xs:anyAttribute processContents="lax" namespace="##any"/>
+    </xs:complexType>
+    <xs:element name="RCISecurity" type="RCISecurityType"/>
+
+    <xs:complexType name="RCIFaultType">
+    	<xs:sequence>
+    		<xs:element name="statuscode" type="xs:string"/>
+    		<xs:element name="statusmessage" type="xs:string"/>
+    	</xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="RCIFault" type="RCIFaultType"/>
+
+</xs:schema>
