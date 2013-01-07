@@ -1,0 +1,142 @@
+<artifactType type="application/vnd.wso2-application+xml" singularLabel="Anwendung" shortName="application" pluralLabel="Anwendungen" iconSet="7" hasNamespace="false">
+    <storagePath>/custom/applications/@{details_name}</storagePath>
+    <nameAttribute>details_name</nameAttribute>
+	<ui>
+	    <list>
+	        <column name="Name">
+	            <data type="path" value="details_name" href="@{storagePath}"/>
+	        </column>
+	        <column name="Version">
+	            <data type="path" value="details_version" href="@{storagePath}"/>
+	        </column>
+	        <column name="Bezeichnung">
+	            <data type="path" value="details_longname" href="@{storagePath}"/>
+	        </column>
+	        <column name="Domaene">
+	            <data type="path" value="details_domain" href="@{storagePath}"/>
+	        </column>
+	    </list>
+	</ui>
+	
+	
+	<relationships>
+	<!--
+        <association type="contains" target="@{contains_entry:value}"/>
+        <association type="isContained" source="@{contains_entry:value}"/>
+      -->
+         <association type="uses" target="@{uses_entry:value}"/>
+         <association type="isUsed" source="@{uses_entry:value}"/>
+         <association type="isResponsible" target="@{isResponsible_entry:value}"/>
+         <association type="responsible"   source="@{isResponsible_entry:value}"/>
+         <association type="referencedBy"   source="@{lokaleDokumente_entry:value}"/>
+       </relationships>
+ 
+	
+    <content>
+        <table name="Details">
+            <field type="text" required="true" readonly="true">
+                <name>Name</name>
+            </field>
+            <field type="text" required="true" >
+                <name>Version</name>
+            </field>
+            <field type="text" required="true">
+                <name label="Bezeichnung">longname</name>
+            </field>
+
+            <field type="options">
+                <name label="Domaene">domain</name>
+                <values>
+                 	<value />
+                	<value>DWH</value>
+                	<value>Finanzierung</value>
+                	<value>ORG/IT</value>
+                	<value>RiskMgm, Contr, ReWe</value>
+                	<value>Veranlagung</value>
+                	<value>Vertrieb</value>
+                	<value>ZV/Konto/Karte</value>
+                </values>
+            </field>
+           <field type="options" required="true">
+                <name label="Zuordnung zum Bankensektor">sector</name>
+                <values>
+                 	<value>harmonisiert</value>
+                	<value>SIENA</value>
+                	<value>TOKIO</value>
+                </values> 
+            </field>
+        <field type="text" required="true">
+                <name label="Hersteller">producer</name>
+            </field> 
+            <field type="text-area">
+                <name label="Beschreibung">description</name>
+            </field>
+        </table>
+
+        <table name="uses">
+            <subheading>
+                <heading>Typ</heading>
+                <heading>Path</heading>
+             </subheading>
+           <field type="option-text" maxoccurs="unbounded" path="true" url="true" >
+                <name>Resource</name>
+                <values>
+                    <value>Infrastrukturelement</value>
+                </values>
+            </field>
+        </table>
+
+      <table name="isResponsible">
+           <subheading>
+                <heading>Rolle</heading>
+                <heading>Person/Organisation</heading>
+             </subheading>
+          <field type="option-text" maxoccurs="unbounded" path="true" url="true">
+                <name>responsibility</name>
+                <values>
+                    <value>Analytiker</value>
+                    <value>Architekt</value>
+                    <value>fachlicher PV</value>
+                    <value>Designer</value>
+                    <value>Entwickler</value>
+                </values>
+             </field>
+        </table> 
+
+  	<table name="externeDokumente">  
+	        <subheading>  
+	            <heading>Typ</heading><heading>externer Link</heading>
+	        </subheading>  
+	        <field maxoccurs="unbounded" type="option-text" url="true">  
+	            <name>externesDokument</name>  
+	            <values>  
+	                <value></value>
+	                <value>API Dokumentation</value>
+	                <value>Sonstiges</value>
+	            </values>  
+	        </field>  
+            <field type="text-area">
+                <name label="Kommentar">comment</name>
+            </field>
+    	</table>  
+
+  	<table name="lokaleDokumente">  
+	        <subheading>  
+	            <heading>Typ</heading><heading>Resource-Referenz</heading>
+	        </subheading>  
+	        <field maxoccurs="unbounded" type="option-text" path="true" url="true">  
+	            <name>lokalesDokument</name>  
+	            <values>  
+	                <value></value>
+	                <value>Sonstiges</value>
+	            </values>  
+	        </field>  
+            <field type="text-area">
+                <name label="Kommentar">comment</name>
+            </field>
+    	</table>  
+
+  
+
+    </content>
+</artifactType>

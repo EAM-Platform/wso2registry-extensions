@@ -1,0 +1,170 @@
+<artifactType type="application/vnd.wso2-appmodule+xml" singularLabel="Modul" shortName="appmodules" pluralLabel="Module" iconSet="9" hasNamespace="false">
+    <storagePath>/custom/appmodules/@{details_application}/@{details_name}</storagePath>
+    <nameAttribute>details_name</nameAttribute>
+	<ui>
+	    <list>
+	        <column name="Name">
+	            <data type="path" value="details_name" href="@{storagePath}"/>
+	        </column>
+	        <column name="Version">
+	            <data type="path" value="details_version" href="@{storagePath}"/>
+	        </column>
+	        <column name="Applikation">
+	            <data type="path" value="details_application" href="@{storagePath}"/>
+	        </column>
+	        <column name="Schicht">
+	            <data type="text" value="details_tier"/>
+	        </column>
+	    </list>
+	</ui>
+    <relationships>
+        <association type="isContained" target="@{isContained_entry:value}"/>
+        <association type="contains" source="@{isContained_entry:value}"/>
+        <!--
+        <association type="contains" target="@{contains_entry:value}"/>
+        <association type="isContained" source="@{contains_entry:value}"/>
+        -->
+        <association type="calls" target="@{calls_entry:value}"/>
+        <association type="isCalled" source="@{calls_entry:value}"/>
+        <association type="isResponsible" target="@{isResponsible_entry:value}"/>
+        <association type="responsible"   source="@{isResponsible_entry:value}"/>
+	  <association type="referencedBy"   source="@{lokaleDokumente_entry:value}"/>
+   </relationships>
+
+    <content>
+        <table name="Details">
+            <field type="text" required="true" readonly="true">
+                <name>Name</name>
+            </field>
+            <field type="text" required="true" >
+                <name>Version</name>
+            </field>
+       	<field type="options" readonly="true">
+            	<name label="zugeordnet zu Applikation">Application</name>
+        	    <values class="at.rbg.registry.droplist.Application" />
+        	</field>
+    	     <field type="options">
+                <name label="Tier (Schicht)">tier</name>
+                <values>
+                 	<value></value>
+                	<value>Client-Tier</value>
+                	<value>Web-Tier</value>
+                	<value>Service-Tier</value>
+                	<value>Host-Tier</value>
+                	<value>Data-Tier</value>
+                </values>
+            </field>        
+            <field type="options">
+                <name label="Zuordnung zum Bankensektor">sector</name>
+                <values>
+                 	<value>harmonisiert</value>
+                	<value>SIENA</value>
+                	<value>TOKIO</value>
+                </values>
+            </field>
+            <field type="text">
+                <name label="Hersteller">producer</name>
+            </field>
+            <field type="text-area">
+                <name label="Beschreibung">description</name>
+            </field>
+        </table>
+      
+        <table name="isContained">
+            <subheading>
+                <heading>Contained by</heading>
+                <heading>Path</heading>
+             </subheading>
+          <field type="option-text" maxoccurs="unbounded" path="true" url="true" >
+                <name>Application</name>
+                <values>
+                    <value>Application</value>
+                </values>
+             </field>
+        </table>
+  
+  <!--
+        <table name="contains">
+            <subheading>
+                <heading>Typ</heading>
+                <heading>Path</heading>
+             </subheading>
+           <field type="option-text" maxoccurs="unbounded" path="true" url="true">
+                <name>Service</name>
+                <values>
+                    <value>ClientAPI</value>
+                    <value>ClientComponent</value>
+                    <value>WebComponent</value>
+                    <value>WebService</value>
+                    <value>HostTraco</value>
+                    <value>HostProgram</value>
+                </values>
+            </field>
+        </table>
+
+       
+        <table name="calls">
+            <subheading>
+                <heading>Typ</heading>
+                <heading>Path</heading>
+             </subheading>
+          <field type="option-text" maxoccurs="unbounded" path="true" url="true">
+                <name>Service_</name>
+                <values>
+                    <value>ClientComponent</value>
+                    <value>WebComponent</value>
+                    <value>WebService</value>
+                </values>
+             </field>
+        </table>
+-->
+      <table name="isResponsible">
+           <subheading>
+                <heading>Rolle</heading>
+                <heading>Persion/Organisation</heading>
+             </subheading>
+          <field type="option-text" maxoccurs="unbounded" path="true" url="true">
+                <name>responsibility</name>
+                <values>
+                    <value>Architekt</value>
+                    <value>Designer</value>
+                    <value>Entwickler</value>
+                    <value>fachlicher PV</value>
+                </values>
+             </field>
+        </table>
+
+  	<table name="externeDokumente">  
+	        <subheading>  
+	            <heading>Typ</heading><heading>externer Link</heading>
+	        </subheading>  
+	        <field maxoccurs="unbounded" type="option-text" url="true">  
+	            <name>externesDokument</name>  
+	            <values>  
+	                <value></value>
+	                <value>API Dokumentation</value>
+	                <value>Sonstiges</value>
+	            </values>  
+	        </field>  
+            <field type="text-area">
+                <name label="Kommentar">comment</name>
+            </field>
+    	</table>  
+
+  			<table name="lokaleDokumente">  
+	        <subheading>  
+	            <heading>Typ</heading><heading>Resource-Referenz</heading>
+	        </subheading>  
+	        <field maxoccurs="unbounded" type="option-text" path="true" url="true">  
+	            <name>lokalesDokument</name>  
+	            <values>  
+	                <value></value>
+	                <value>Sonstiges</value>
+	            </values>  
+	        </field>  
+            <field type="text-area">
+                <name label="Kommentar">comment</name>
+            </field>
+    	</table>  
+    </content>
+</artifactType>

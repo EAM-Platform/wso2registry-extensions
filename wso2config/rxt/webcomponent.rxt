@@ -1,0 +1,118 @@
+<artifactType type="application/vnd.wso2-webcomponent+xml" singularLabel="Web-Component" shortName="webcomponent" pluralLabel="Web-Components" iconSet="2" hasNamespace="false">
+    <storagePath>/custom/webcomponents/@{details_application}/@{details_name}</storagePath>
+    <nameAttribute>details_name</nameAttribute>
+	<ui>
+	    <list>
+	        <column name="Name">
+	            <data type="path" value="details_name" href="@{storagePath}"/>
+	        </column>
+	        <column name="Version">
+	            <data type="path" value="details_version" href="@{storagePath}"/>
+	        </column>
+	        <column name="Applikation">
+	            <data type="path" value="details_application" href="@{storagePath}"/>
+	        </column>
+	    </list>
+	</ui>
+    <relationships>
+        <association type="isContained" target="@{isContained_entry:value}"/>
+        <association type="contains" source="@{isContained_entry:value}"/>
+        <association type="calls" target="@{calls_entry:value}"/>
+        <association type="isCalled" source="@{calls_entry:value}"/>
+        <association type="isResponsible" target="@{isResponsible_entry:value}"/>
+        <association type="responsible"   source="@{isResponsible_entry:value}"/>
+	  <association type="referencedBy"   source="@{lokaleDokumente_entry:value}"/>
+    </relationships>
+
+    <content>
+        <table name="Details">
+            <field type="text" required="true" readonly="true">
+                <name>Name</name>
+            </field>
+            <field type="text">
+                <name>Version</name>
+            </field>
+       	<field type="options" readonly="true">
+            	<name label="zugeordnet zu Applikation">Application</name>
+        	    <values class="at.rbg.registry.droplist.Application" />
+        	</field>
+            <field type="text-area">
+                <name label="Beschreibung">description</name>
+            </field>
+        </table>
+        
+        <table name="isContained">
+            <subheading>
+                <heading>Contained by</heading>
+                <heading>Path</heading>
+             </subheading>
+          <field type="option-text" maxoccurs="unbounded" path="true" url="true" >
+                <name>Modul</name>
+                <values>
+                    <value>Modul</value>
+                </values>
+             </field>
+        </table>
+
+        <table name="calls">
+            <subheading>
+                <heading>Typ</heading>
+                <heading>Path</heading>
+             </subheading>
+          <field type="option-text" maxoccurs="unbounded" path="true" url="true">
+                <name>Programm</name>
+                <values>
+                    <value>WebService</value>
+                </values>
+             </field>
+        </table>
+
+      <table name="isResponsible">
+           <subheading>
+                <heading>Rolle</heading>
+                <heading>Persion/Organisation</heading>
+             </subheading>
+          <field type="option-text" maxoccurs="unbounded" path="true" url="true">
+                <name>responsibility</name>
+                <values>
+                    <value>Designer</value>
+                    <value>Entwickler</value>
+                </values>
+             </field>
+        </table>
+
+  	<table name="externeDokumente">  
+	        <subheading>  
+	            <heading>Typ</heading><heading>externer Link</heading>
+	        </subheading>  
+	        <field maxoccurs="unbounded" type="option-text" url="true">  
+	            <name>externesDokument</name>  
+	            <values>  
+	                <value></value>
+	                <value>API Dokumentation</value>
+	                <value>Sonstiges</value>
+	            </values>  
+	        </field>  
+            <field type="text-area">
+                <name label="Kommentar">comment</name>
+            </field>
+    	</table>  
+
+  	<table name="lokaleDokumente">  
+	        <subheading>  
+	            <heading>Typ</heading><heading>Resource-Referenz</heading>
+	        </subheading>  
+	        <field maxoccurs="unbounded" type="option-text" path="true" url="true">  
+	            <name>lokalesDokument</name>  
+	            <values>  
+	                <value></value>
+	                <value>Sonstiges</value>
+	            </values>  
+	        </field>  
+            <field type="text-area">
+                <name label="Kommentar">comment</name>
+            </field>
+    	</table>  
+
+    </content>
+</artifactType>

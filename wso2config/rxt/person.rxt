@@ -1,0 +1,60 @@
+<artifactType type="application/vnd.wso2-person+xml" singularLabel="Person" shortName="person" pluralLabel="Personen" iconSet="1" hasNamespace="false">
+    <storagePath>/custom/persons/@{details_organization}/@{details_userID}</storagePath>
+    <nameAttribute>details_name</nameAttribute>
+	<ui>
+	    <list>
+	        <column name="UserId">
+	            <data type="path" value="details_userID" href="@{storagePath}"/>
+	        </column>
+	        <column name="Username">
+	            <data type="path" value="details_name" href="@{storagePath}"/>
+	        </column>
+	        <column name="Organisation">
+	            <data type="path" value="details_organization" href="@{storagePath}"/>
+	        </column>
+	    </list>
+	</ui>
+<!--
+    <relationships>
+        <association type="responsible" target="@{responsible_entry:value}"/>
+        <association type="responsible" source="@{responsible_entry:value}"/>
+    </relationships>
+-->
+    <content>
+        <table name="Details">
+            <field type="text" required="true" readonly="true">
+                <name>UserID</name>
+            </field>
+           <field type="text" required="true">
+                <name>Name</name>
+            </field>
+             <field type="options">
+                <name label="Organisation">organization</name>
+                <values>
+                 	<value>RACON</value>
+                 	<value>RSO</value>
+			<value>GRZ</value>
+                </values>
+            </field>
+            <field type="text-area">
+                <name>Description</name>
+            </field>
+        </table>
+<!--
+        <table name="responsible">
+            <subheading>
+                <heading>Verantwortlich fuer</heading>
+                <heading>Path</heading>
+             </subheading>
+          <field type="option-text" maxoccurs="unbounded" path="true" url="true">
+                <name>responsibility</name>
+                <values>
+                    <value>fachlich</value>
+                    <value>technisch</value>
+                </values>
+           </field>
+
+        </table>
+-->
+    </content>
+</artifactType>

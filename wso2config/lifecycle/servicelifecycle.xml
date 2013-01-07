@@ -1,0 +1,92 @@
+<aspect name="ServiceLifeCycle" class="org.wso2.carbon.governance.registry.extensions.aspects.DefaultLifeCycle">
+    <configuration type="literal">
+     	  <!-- consider setting audit to false! -->
+        <lifecycle audit="false">
+            <scxml xmlns="http://www.w3.org/2005/07/scxml"
+                   version="1.0"
+                   initialstate="in.Design">
+                <state id="in.Design">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Freigabe im QG Design" forEvent="zur Entwicklung">
+                          <!--       <permissions>
+                                    <permission roles="architect, contributor"/>
+                                </permissions>
+                                <validations>
+                                    <validation forEvent="" class="">
+                                        <parameter name="" value=""/>
+                                    </validation>
+                                </validations>-->
+                            </item>
+                            <item name="Bereits in Produktion" forEvent="zum Produktionsstatus">
+                            </item>
+                            <item name="Bereits entwickelt" forEvent="zum Teststatus">
+                            </item>
+                        </data>
+                        <!--<data name="transitionValidation">
+                            <validation forEvent="" class="">
+                                <parameter name="" value=""/>
+                            </validation>
+                        </data>
+                        <data name="transitionPermission">
+                            <permission forEvent="" roles=""/>
+                        </data>
+                        <data name="transitionScripts">
+                            <js forEvent="">
+                                <console function="">
+                                    <script type="text/javascript">
+                                    </script>
+                                </console>
+                                <server function="">
+                                    <script type="text/javascript"></script>
+                                </server>
+                            </js>
+                        </data>-->
+                    </datamodel>
+                    <transition event="zur Entwicklung" target="in.Entwicklung"/>                  
+                    <transition event="zum Produktionsstatus" target="in.Produktion"/>                  
+                    <transition event="zum Teststatus" target="in.Test"/>                  
+                </state>
+                <state id="in.Entwicklung">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="QG Development / Teststart" forEvent="zum Test">
+                            </item>
+                        </data>
+   			           </datamodel>
+  		         		<transition event="zum Test" target="in.Test"/>
+    	            <transition event="zurueck zu Design" target="in.Design"/>
+                </state>
+                <state id="in.Test">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Testfaelle bestanden" forEvent="zur Freigabe">
+                            </item>
+                        </data>
+   			           </datamodel>
+  		             <transition event="zur Freigabe" target="in.Freigabe"/>
+    	             <transition event="zurueck zur Entwicklung" target="in.Entwicklung"/>
+                </state>
+                <state id="in.Freigabe">
+                    <datamodel>
+   			           </datamodel>
+  		             <transition event="produktiv stellen" target="in.Produktion"/>
+    	             <transition event="zurueck zum Test" target="in.Test"/>
+                </state>
+                <state id="in.Produktion">  
+   		                <transition event="Abgelaufen" target="Abgelaufen"/>
+    	                <transition event="zurueck zur Freigabe" target="in.Freigabe"/>
+                </state>                
+                <state id="Abgelaufen">  
+   		               <transition event="Stillgelegt" target="Stillgelegt"/>
+          	         <transition event="zurueck zu Produktion" target="in.Produktion"/>
+              </state>                
+              <state id="Stillgelegt">  
+			           <datamodel>
+      	        	</datamodel>
+            	      <transition event="zurueck zu Abgelaufen" target="Abgelaufen"/>
+                 </state>                
+            </scxml>
+        </lifecycle>
+    </configuration>
+</aspect>

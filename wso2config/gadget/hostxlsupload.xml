@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+     <!-- gadget URL /registry/resource/_system/config/repository/dashboards/gadgets/hostxlsupload.xml -->
+     <Module>  
+     <ModulePrefs title="Hostprogramme Import von XLS">  
+     </ModulePrefs>  
+     <Content type="html">  
+     <![CDATA[
+     <form action="/integration-web/servlet/importHostprogramme" method="post" enctype="multipart/form-data">
+       <input name="CamelFileName" type="file"  /><br />
+       <input type="submit" value="Datei verarbeiten" />
+     </form>
+    ]]>  
+   </Content>  
+   </Module>

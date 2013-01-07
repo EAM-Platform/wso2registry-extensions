@@ -1,0 +1,100 @@
+<artifactType type="application/vnd.wso2-infrastructure+xml" singularLabel="Infrastruktur-Element" shortName="infrastructure" pluralLabel="Infrastruktur-Elemente" iconSet="8" hasNamespace="false">
+    <storagePath>/custom/infrastructure/@{details_name}_@{details_componentnumber}</storagePath>
+    <nameAttribute>details_name</nameAttribute>
+	<ui>
+	    <list>
+	        <column name="Name">
+	            <data type="path" value="details_name" href="@{storagePath}"/>
+	        </column>
+	        <column name="Komponentennummer">
+	            <data type="text" value="details_componentnumber" />
+	        </column>
+	        <column name="Version">
+	            <data type="text" value="details_version" />
+	        </column>
+	        <column name="Status">
+	            <data type="text" value="details_status" />
+	        </column>
+	        <column name="Beschreibung">
+	            <data type="text" value="details_description"/>
+	        </column>
+	    </list>
+	</ui>
+    <relationships>
+         <association type="contains" target="@{contains_entry:value}"/>
+         <association type="isContained" source="@{contains_entry:value}"/>
+    </relationships>
+
+    <content>
+        <table name="Details">
+            <field type="text" required="true" readonly="true">
+                <name>Name</name>
+            </field>
+            <field type="text" >
+                <name>Version</name>
+            </field>
+            <field type="text" required="true">
+                <name label="Komponentennummer">componentnumber</name>
+            </field>
+            <field type="options">
+                <name label="Kategorie">category</name>
+                <values>
+                 	<value>Deploymentplatform</value>
+                	<value>Domain Application Infrastructure</value>
+                	<value>Domain Infrastructure</value>
+                	<value>Domain Management Tools + Development</value>
+                	<value>Domain Security</value>
+                </values>
+            </field>
+            <field type="options">
+                <name label="Subkategorie">subcategory</name>
+                <values>
+                 	<value>Application-Platform</value>
+                	<value>Infrastructure-Platform</value>
+                	<value>Subdomain Access Control + Prevention</value>
+                 	<value>Subdomain Alarming</value>
+                	<value>Subdomain Application Container</value>
+                	<value>Subdomain Authorization + Authentication</value>
+                 	<value>Subdomain Client</value>
+                	<value>Subdomain Client Application Container</value>
+                	<value>Subdomain Cross Cutting Infrastructure</value>
+                 	<value>Subdomain Development</value>
+                	<value>Subdomain Encryption</value>
+                	<value>Subdomain HW-Resource Pool Client</value>
+                 	<value>Subdomain HW-Resource Pool Mainframe</value>
+                	<value>Subdomain HW-Resource Pool Server</value>
+                	<value>Subdomain HW-Resource Pool Storage</value>
+                 	<value>Subdomain Mainframe</value>
+                 	<value>Subdomain Network</value>
+                	<value>Subdomain Protocols</value>
+                	<value>Subdomain Resource Administration</value>
+                 	<value>Subdomain Server</value>
+                	<value>Subdomain Service Management</value>
+                	<value>Subdomain Service- und System-Management</value>
+                 	<value>Subdomain Telephony</value>
+                	<value>Subdomain Virtualization</value>
+                	<value>Subdomain Virus + Malware Protection</value>
+                </values>
+            </field>
+            <field type="text">
+                <name label="Status">status</name>
+            </field>
+            <field type="text-area">
+                <name label="Beschreibung">description</name>
+            </field>
+        </table>
+        
+        <table name="contains">
+            <subheading>
+                <heading>besteht aus</heading>
+                <heading>Path</heading>
+             </subheading>
+          <field type="option-text" maxoccurs="unbounded" path="true" url="true" >
+                <name>Infrastrukturelement</name>
+                <values>
+                    <value>Infrastrukturelement</value>
+                 </values>
+             </field>
+        </table>
+    </content>
+</artifactType>

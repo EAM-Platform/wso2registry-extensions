@@ -1,0 +1,179 @@
+<service>
+<!-- new TO BE -->
+    <table name="Overview">
+        <field type="text" required="true" readonly="true">
+            <name label="Name">Name</name>
+        </field>
+	<field type="text" required="true" readonly="true">
+            <name label="Namespace">Namespace</name>
+        </field>
+        <field type="text">
+            <name label="Version">Version</name>
+        </field>
+      <field type="options">
+            	<name label="zugeordnet zu Applikation">Application</name>
+        	    <values class="at.rbg.registry.droplist.Application" />
+       </field>
+       <field type="options">
+                <name label="Schnittstellensichtbarkeit">interfaceType</name>
+                <values>
+                 	<value>internal</value>
+                	<value>external</value>
+                </values>
+            </field>
+             <field type="options">
+                <name label="Typ">typ</name>
+                <values>
+             	  	<value></value>
+                	<value>SOAP</value>
+                 	<value>IIOP</value>
+                </values>
+            </field>
+         <field type="text-area">
+            <name label="Beschreibung">Description</name>
+        </field>
+        <field type="text">
+            <name label="naechste Version (namespace)">nextnamespace</name>
+        </field>
+     </table>
+
+     <table name="isContained">
+            <subheading>
+                <heading>Contained by</heading>
+                <heading>Path</heading>
+             </subheading>
+          <field type="option-text" maxoccurs="unbounded" path="true" url="true" >
+                <name>Modul</name>
+                <values>
+                    <value>Modul</value>
+                </values>
+             </field>
+        </table>
+
+    <table name="calls">
+            <subheading>
+                <heading>Typ</heading>
+                <heading>Path</heading>
+             </subheading>
+          <field type="option-text" maxoccurs="unbounded" path="true" url="true">
+                <name label="WebService/Traco">called</name>
+                <values>
+                    <value>WebService</value>
+                    <value>HostTraco</value>
+                </values>
+             </field>
+    </table>
+
+    <table name="uses">
+            <subheading>
+                <heading>Typ</heading>
+                <heading>Path</heading>
+             </subheading>
+           <field type="option-text" maxoccurs="unbounded" path="true" url="true">
+                <name>Resource</name>
+                <values>
+                    <value>Tabelle</value>
+                </values>
+            </field>
+    </table>
+
+ 
+      <table name="isResponsible">
+           <subheading>
+                <heading>Rolle</heading>
+                <heading>Persion/Organisation</heading>
+             </subheading>
+          <field type="option-text" maxoccurs="unbounded" path="true" url="true">
+                <name>responsibility</name>
+                <values>
+                    <value>Designer</value>
+                    <value>Entwickler</value>
+                </values>
+             </field>
+        </table>
+
+  	<table name="externeDokumente">  
+	        <subheading>  
+	            <heading>Typ</heading><heading>externer Link</heading>
+	        </subheading>  
+	        <field maxoccurs="unbounded" type="option-text" url="true">  
+	            <name>externesDokument</name>  
+	            <values>  
+	                <value></value>
+	                <value>API Dokumentation</value>
+	                <value>Sonstiges</value>
+	            </values>  
+	        </field>  
+            <field type="text-area">
+                <name label="Kommentar">comment</name>
+            </field>
+    	</table>  
+
+  	<table name="lokaleDokumente">  
+	        <subheading>  
+	            <heading>Typ</heading><heading>Resource-Referenz</heading>
+	        </subheading>  
+	        <field maxoccurs="unbounded" type="option-text" path="true" url="true">  
+	            <name>lokalesDokument</name>  
+	            <values>  
+	                <value></value>
+	                <value>Sonstiges</value>
+	            </values>  
+	        </field>  
+            <field type="text-area">
+                <name label="Kommentar">comment</name>
+            </field>
+    	</table>  
+    	
+		<!-- this section is needed in order not to lose the connection to wsdl -->
+   <table name="Interface">
+        <field type="text">
+            <name label="WSDL URL">WSDL URL</name>
+        </field>
+        <field type="options">
+            <name label="Transport Protocols">Transport Protocols</name>
+            <values>
+                <value>None</value><value>HTTPS</value><value>HTTP</value><value>SMTP</value><value>TCP</value><value>XMPP</value><value>JMS</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Message Formats">Message Formats</name>
+            <values>
+                <value>None</value><value>SOAP 1.1</value><value>SOAP 1.2</value><value>XML</value><value>JSON</value><value>HTTP-REST</value><value>CSV</value><value>BINARY</value>
+            </values>
+        </field>
+        <field type="options">
+            <name label="Message Exchange Patterns">Message Exchange Patterns</name>
+            <values>
+                <value>None</value><value>Request Response</value><value>One Way</value>
+            </values>
+        </field>
+    </table>
+
+		<!-- this section is needed otherwise not working -->
+    <table name="Security">
+         <field type="text-area">
+            <name label="Comments">Comments</name>
+        </field>
+    </table>
+
+
+    <table name="Endpoints">
+        <subheading>
+            <heading>Environments</heading><heading>URL</heading>
+        </subheading>
+        <field type="option-text" maxoccurs="unbounded">
+            <name label="Endpoint">Endpoint</name>
+            <values>
+                <value>None</value><value>Unknown</value><value>Dev</value><value>Test</value><value>Stag</value><value>Prod</value>
+            </values>
+        </field>
+    </table>
+
+     <table name="dependencyManagement">  
+	<field type="text-area" readonly="true">
+            <name label="POM">pom</name>
+        </field>
+   </table>  
+
+</service> 
