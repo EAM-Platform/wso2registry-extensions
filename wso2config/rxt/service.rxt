@@ -1,34 +1,65 @@
-<service>
-<!-- new TO BE -->
-    <table name="Overview">
-        <field type="text" required="true" readonly="true">
-            <name label="Name">Name</name>
-        </field>
-	<field type="text" required="true" readonly="true">
-            <name label="Namespace">Namespace</name>
-        </field>
-        <field type="text">
-            <name label="Version">Version</name>
-        </field>
-      <field type="options">
-            	<name label="zugeordnet zu Applikation">Application</name>
-        	    <values class="at.rbg.registry.droplist.Application" />
-       </field>
-       <field type="options">
+<artifactType type="application/vnd.wso2-service+xml" shortName="service" singularLabel="Service" pluralLabel="Services"
+              hasNamespace="false" iconSet="27">
+    <storagePath>/custom/services/@{namespace}/@{name}</storagePath>
+    <nameAttribute>overview_name</nameAttribute>
+    <namespaceAttribute>overview_namespace</namespaceAttribute>
+    <ui>
+        <list>
+            <column name="Service Name">
+                <data type="text" value="overview_name"/>
+            </column>
+            <column name="Service Version">
+                <data type="path" value="overview_version" href="@{storagePath}"/>
+            </column>
+            <column name="Service Namespace">
+                <data type="text" value="overview_namespace"/>
+            </column>
+	        <column name="Applikation">
+	            <data type="text" value="overview_application"/>
+	        </column>
+        </list>
+    </ui>
+    <relationships>
+        <association type="isContained" target="@{isContained_entry:value}"/>
+        <association type="contains" source="@{isContained_entry:value}"/>
+        <association type="calls" target="@{calls_entry:value}"/>
+        <association type="isCalled" source="@{calls_entry:value}"/>
+         <association type="uses" target="@{uses_entry:value}"/>
+        <association type="isUsed" source="@{uses_entry:value}"/>
+        <association type="isResponsible" target="@{isResponsible_entry:value}"/>
+        <association type="responsible"   source="@{isResponsible_entry:value}"/>
+			  <association type="referencedBy"   source="@{lokaleDokumente_entry:value}"/>
+    </relationships>
+	  <content>
+	    <table name="Overview">
+	        <field type="text" required="true" readonly="true">
+	            <name label="Name">Name</name>
+	        </field>
+	       	<field type="text" required="true" readonly="true">
+	            <name label="Namespace">Namespace</name>
+	        </field>
+	        <field type="text">
+	            <name label="Version">Version</name>
+	        </field>
+	        <field type="options">
+	            	<name label="zugeordnet zu Applikation">Application</name>
+	        	    <values class="at.rbg.registry.droplist.Application" />
+	         </field>
+           <field type="options">
                 <name label="Schnittstellensichtbarkeit">interfaceType</name>
                 <values>
                  	<value>internal</value>
                 	<value>external</value>
                 </values>
-            </field>
-             <field type="options">
+          </field>
+          <field type="options">
                 <name label="Typ">typ</name>
                 <values>
              	  	<value></value>
                 	<value>SOAP</value>
                  	<value>IIOP</value>
                 </values>
-            </field>
+         </field>
          <field type="text-area">
             <name label="Beschreibung">Description</name>
         </field>
@@ -77,7 +108,6 @@
             </field>
     </table>
 
- 
       <table name="isResponsible">
            <subheading>
                 <heading>Rolle</heading>
@@ -124,7 +154,6 @@
                 <name label="Kommentar">comment</name>
             </field>
     	</table>  
-    	
 		<!-- this section is needed in order not to lose the connection to wsdl -->
    <table name="Interface">
         <field type="text">
@@ -149,14 +178,13 @@
             </values>
         </field>
     </table>
-
-		<!-- this section is needed otherwise not working -->
+    
+    <!-- this section is needed otherwise not working 
     <table name="Security">
          <field type="text-area">
             <name label="Comments">Comments</name>
         </field>
-    </table>
-
+    </table> -->
 
     <table name="Endpoints">
         <subheading>
@@ -175,5 +203,5 @@
             <name label="POM">pom</name>
         </field>
    </table>  
-
-</service> 
+    </content>
+</artifactType>
