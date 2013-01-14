@@ -320,8 +320,9 @@ public class ServiceRelationHandler extends Handler {
 		
 		GovernanceUtils.loadGovernanceArtifacts((UserRegistry) registry);
 		GenericArtifact ga = getGenericArtifactInternally(r);
+		boolean isServiceChanged = false;
 		if (RegistryConstants.SERVICE_MEDIA_TYPE.equals(mediaType)) {
-			updateWebServiceVersionAttribute(ga, false);
+			isServiceChanged = updateWebServiceVersionAttribute(ga, false);
 		}
 		// this will be null for "application" artifacts. those are handled in
 		// ApplicationCreateHandler
@@ -360,7 +361,7 @@ public class ServiceRelationHandler extends Handler {
 		}
 
 		GenericArtifactManager g = lookupArtifactManager(mediaType);
-		if (RegistryConstants.SERVICE_MEDIA_TYPE.equals(mediaType)) {
+		if (isServiceChanged) {
 			g.updateGenericArtifact(ga);
 		}
 
